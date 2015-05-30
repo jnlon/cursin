@@ -10,10 +10,7 @@ Press q to quit
 # Screenshots
 
 ![Screenshot1](/screenshots/2015-05-29-224511_1920x1200_scrot.png)
-Format: ![Alt Text](url)
 
 ![Screenshot2](/screenshots/2015-05-29-224554_1920x1200_scrot.png)
-Format: ![Alt Text](url)
 
 ![Screenshot3](/screenshots/2015-05-29-225050_1920x1200_scrot.png)
-Format: ![Alt Text](url)
