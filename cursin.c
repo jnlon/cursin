@@ -13,7 +13,8 @@
 
 void printwave(double AMP, double PER, double d, unsigned int *c) {
 
-  for (double x=0.0;x<COLS+d;x+=1.0) {
+  double x;
+  for (x=0.0;x<COLS+d;x+=1.0) {
 
     //Swap color
     attron(COLOR_PAIR(( (*c += 1) % CC) + 1));
