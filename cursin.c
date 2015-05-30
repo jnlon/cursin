@@ -11,11 +11,10 @@
 //Color count
 #define CC 5
 
-
 void printwave(double AMP, double PER, double d, unsigned int *c) {
 
   for (double x=0.0;x<COLS+d;x+=1.0) {
-    
+
     //Swap color
     attron(COLOR_PAIR(( (*c += 1) % CC) + 1));
 
@@ -30,29 +29,28 @@ void printwave(double AMP, double PER, double d, unsigned int *c) {
   }
 }
 
-
 int getinput(double *AMP, double *PER, double *d, double CI ) {
 
   switch (getch()) {
     case KEY_UP:
-    *AMP += 1;
-    break;
-    case KEY_DOWN:
-    *AMP -= 1;
-    break;
-    case KEY_LEFT:
-    if (*PER < 0.04)
+      *AMP += 1;
       break;
-    *PER -= .05;
-    *d -= CI*(*PER);
-    break;
+    case KEY_DOWN:
+      *AMP -= 1;
+      break;
+    case KEY_LEFT:
+      if (*PER < 0.04)
+        break;
+      *PER -= .05;
+      *d -= CI*(*PER);
+      break;
     case KEY_RIGHT:
-    *PER += .05;
-    *d += CI*(*PER);
-    break;
+      *PER += .05;
+      *d += CI*(*PER);
+      break;
     case (int)'q':
-    endwin();
-    return 1;
+      endwin();
+      return 1;
   }
   return 0;
 }
@@ -82,7 +80,7 @@ int main(int argc, char* argv[]) {
 
   //Phase shift
   double d = 0.0;
-  
+
   //Color swapper
   int c = 0;
 
@@ -92,28 +90,28 @@ int main(int argc, char* argv[]) {
 
   while (1) {
 
-      usleep(DELAY);
+    usleep(DELAY);
 
-      printwave(AMP, PER, d, &c);
+    printwave(AMP, PER, d, &c);
 
-      int quit = getinput(&AMP, &PER, &d, CI);
-      if (quit == 1)
-        break;
+    int quit = getinput(&AMP, &PER, &d, CI);
+    if (quit == 1)
+      break;
 
-      //Print info in corner
-      attron(COLOR_PAIR(999));
-      mvprintw(1, 0, "AMP: %.2f", AMP);
-      mvprintw(0, 0, "PERIOD %.2f", PER);
+    //Print info in corner
+    attron(COLOR_PAIR(999));
+    mvprintw(1, 0, "AMP: %.2f", AMP);
+    mvprintw(0, 0, "PERIOD %.2f", PER);
 
-      refresh();
-      clear();
+    refresh();
+    clear();
 
-      //scroll
-      d += 1.0;
+    //scroll
+    d += 1.0;
 
-      //seamless loop
-      if (d > COLS) 
-        d -= CI; 
+    //seamless loop
+    if (d > COLS) 
+      d -= CI; 
   }
 
   endwin();
