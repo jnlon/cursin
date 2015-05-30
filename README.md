@@ -1,5 +1,5 @@
 # cursin
-Colorful sine wave in curses
+Colorful sine wave in curses that moves from right to left
 
 Press up/down arrow to increase/decrease wave amplitude
 
