@@ -1,5 +1,4 @@
-
-                    GNU GENERAL PUBLIC LICENSE
+                       GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
  Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
@@ -160,7 +159,7 @@ conditions are met.  This License explicitly affirms your unlimited
 permission to run the unmodified Program.  The output from running a
 covered work is covered by this License only if the output, given its
 content, constitutes a covered work.  This License acknowledges your
-rights of fair use or other equivalent, as provided by copyright law. 23 35147   23  8414    0     0  55261      0 --:--:-- --:--:-- --:--:-- 54993
+rights of fair use or other equivalent, as provided by copyright law.
 
   You may make, run and propagate covered works that you do not
 convey, without conditions so long as your license otherwise remains
@@ -627,8 +626,7 @@ copy of the Program in return for a fee.
 possible use to the public, the best way to achieve this is to make it
 free software which everyone can redistribute and change under these terms.
 
-  To do so, attach100 35147  100 35147    0     0   162k      0 --:--:-- --:--:-- --:--:--  161k
- the following notices to the program.  It is safest
+  To do so, attach the following notices to the program.  It is safest
 to attach them to the start of each source file to most effectively
 state the exclusion of warranty; and each file should have at least
 the "copyright" line and a pointer to where the full notice is found.
