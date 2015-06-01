@@ -91,13 +91,9 @@ int main(int argc, char* argv[]) {
 
   while (1) {
 
-    usleep(DELAY);
+    erase();
 
     printwave(AMP, PER, d, &c);
-
-    int quit = getinput(&AMP, &PER, &d, CI);
-    if (quit == 1)
-      break;
 
     //Print info in corner
     attron(COLOR_PAIR(999));
@@ -105,7 +101,12 @@ int main(int argc, char* argv[]) {
     mvprintw(0, 0, "PERIOD %.2f", PER);
 
     refresh();
-    clear();
+
+    int quit = getinput(&AMP, &PER, &d, CI);
+    if (quit == 1)
+      break;
+
+    usleep(DELAY);
 
     //scroll
     d += 1.0;
