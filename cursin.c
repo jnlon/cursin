@@ -4,61 +4,43 @@
 #include <math.h>
 #include <unistd.h>
 
-#define AMPLITUDE 1
-#define PERIOD .35
-#define DELAY 10000
+#define DEFAULT_AMPLITUDE 1
+#define DEFAULT_PERIOD .35
+#define DELAY 15000
 
 //Color count
-#define CC 5
+#define NUM_COLORS 6
 
-void printwave(double AMP, double PER, double d, unsigned int *c) {
+typedef unsigned short ushort;
+
+ushort printwave(double amplitude, double period,
+    short phase_shift, ushort color_index) {
 
   double x;
-  for (x=0.0;x<COLS+d;x+=1.0) {
+  for (x=0.0; x < (COLS+phase_shift) ; x += 1.0) {
 
-    //Swap color
-    attron(COLOR_PAIR(( (*c += 1) % CC) + 1));
+    // Swap color
+    color_index += 1;
+    attron(COLOR_PAIR((color_index % NUM_COLORS)+1));
 
-    //Find Y 
+    // Find Y 
     double ratio = (2.0*M_PI)/LINES;
-    double y = sin(PER*x*ratio);
-    y *= AMP; 
+    double y = sin(period*x*ratio);
+    y *= amplitude; 
     y += LINES/2;
 
-    //Print dot
-    mvprintw((int)y, (int)x-d, ".");
-  }
-}
+    // Print cell
+    mvprintw((int)(y), (int)(x-phase_shift), " ");
 
-int getinput(double *AMP, double *PER, double *d, double CI ) {
-
-  switch (getch()) {
-    case KEY_UP:
-      *AMP += 1;
-      break;
-    case KEY_DOWN:
-      *AMP -= 1;
-      break;
-    case KEY_LEFT:
-      if (*PER < 0.04)
-        break;
-      *PER -= .05;
-      *d -= CI*(*PER);
-      break;
-    case KEY_RIGHT:
-      *PER += .05;
-      *d += CI*(*PER);
-      break;
-    case (int)'q':
-      endwin();
-      return 1;
   }
-  return 0;
+
+  return color_index;
+
 }
 
 int main(int argc, char* argv[]) {
 
-  //Init
+  // Curses init
   WINDOW* screen = initscr();
   start_color();
   nodelay(screen, 1);
@@ -67,53 +49,54 @@ int main(int argc, char* argv[]) {
   curs_set(0);
   keypad(screen, TRUE);
 
-  //Normal color
-  init_pair(999, COLOR_WHITE, COLOR_BLACK); 
-
-  //Fruity!
-  init_pair(1, 1, COLOR_BLACK); //red
-  init_pair(2, 2, COLOR_BLACK); //green
-  init_pair(3, 3, COLOR_BLACK); //yellow
-  init_pair(4, 4, COLOR_BLACK); //blue
-  init_pair(5, 5, COLOR_BLACK); //magenta
+  // Color pairs
+  init_pair(1, COLOR_RED, COLOR_BLACK); 
+  init_pair(2, COLOR_GREEN, COLOR_BLACK); 
+  init_pair(3, COLOR_YELLOW, COLOR_BLACK);
+  init_pair(4, COLOR_BLUE, COLOR_BLACK);
+  init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
+  init_pair(6, COLOR_CYAN, COLOR_BLACK);
+  init_pair(7, COLOR_WHITE, COLOR_BLACK);
   attron(A_BOLD);
   attron(A_STANDOUT);
 
-  //Phase shift
-  double d = 0.0;
-
-  //Color swapper
-  int c = 0;
-
-  double AMP= (LINES/2)*AMPLITUDE; 
-  double PER= PERIOD;
-  double CI = ((2.0*M_PI)/LINES)/4;
+  // Wave attributes
+  ushort color_index = 0;
+  short phase_shift = 0;
+  double amplitude = (LINES/2)*DEFAULT_AMPLITUDE; 
+  double period = DEFAULT_PERIOD;
 
   while (1) {
 
     erase();
 
-    printwave(AMP, PER, d, &c);
+    color_index = printwave(amplitude, period, phase_shift, color_index);
 
-    //Print info in corner
-    attron(COLOR_PAIR(999));
-    mvprintw(1, 0, "AMP: %.2f", AMP);
-    mvprintw(0, 0, "PERIOD %.2f", PER);
+    attron(COLOR_PAIR(7));
+    mvprintw(0, 0, "PERIOD %.2f", period);
+    mvprintw(1, 0, "AMP: %.2f", amplitude);
+    mvprintw(2, 0, "PHASE: %d", phase_shift);
 
     refresh();
 
-    int quit = getinput(&AMP, &PER, &d, CI);
-    if (quit == 1)
-      break;
+    switch (getch()) {
+      case KEY_UP: amplitude += 1.0; break;
+      case KEY_DOWN: amplitude -= 1.0; break;
+      case KEY_LEFT: period -= .05; break;
+      case KEY_RIGHT: period += .05; break;
+      case (int)'q':
+        endwin();
+        return 0;
+      default: break;
+    }
 
     usleep(DELAY);
 
-    //scroll
-    d += 1.0;
+    phase_shift += 1; 
 
-    //seamless loop
-    if (d > COLS) 
-      d -= CI; 
+    if (phase_shift*period >= LINES)
+      phase_shift = 0;
+
   }
 
   endwin();

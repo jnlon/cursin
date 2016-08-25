@@ -1,3 +1,3 @@
 
 all:
-	gcc cursin.c -lm -lncurses -o cursin
+	gcc cursin.c -Wall -lm -lncurses -o cursin
