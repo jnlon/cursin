@@ -1,3 +1,3 @@
 
 all:
-	gcc cursin.c -Wall -lm -lncurses -o cursin
+	$(CC) cursin.c $(CFLAGS) -Wall -lm -lncurses -o cursin

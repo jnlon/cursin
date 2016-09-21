@@ -1,13 +1,34 @@
 # cursin
-Colorful sine wave in curses that moves from right to left
 
-Press up/down arrow to increase/decrease wave amplitude
+A colorful sine wave in your commandline.
 
-Press right/left arrow to increase/decrease wave period
+## Building
 
-Press q to quit
+Be sure you have ncurses development files installed, a C compiler, and make.
 
-# Screenshots
+```
+$ cd /path/to/cursin
+
+$ make
+
+$ ./cursin
+
+```
+
+## Controls
+
+|  Key(s) |  Effect  |
+| ------- | -------- |
+| q | Quit |
+| up arrow,k | Increment Amplitude |
+| down arrow,j | Decrement Amplitude |
+| right arrow,l | Increment Period |
+| left arrow,h | Decrement Period |
+| + |  Increment Delay Multiplier |
+| - |  Decrement Delay Multiplier |
+| space | Reset Phase |
+
+## Screenshots
 
 ![Screenshot1](/screenshots/2015-05-29-224511_1920x1200_scrot.png)
 

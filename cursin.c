@@ -6,7 +6,8 @@
 
 #define DEFAULT_AMPLITUDE 1
 #define DEFAULT_PERIOD .35
-#define DELAY 15000
+#define DEFAULT_DELAY_MULTIPLIER 150
+#define BASE_DELAY 100
 
 //Color count
 #define NUM_COLORS 6
@@ -61,6 +62,7 @@ int main(int argc, char* argv[]) {
   attron(A_STANDOUT);
 
   // Wave attributes
+  unsigned char delayx = DEFAULT_DELAY_MULTIPLIER;
   ushort color_index = 0;
   short phase_shift = 0;
   double amplitude = (LINES/2)*DEFAULT_AMPLITUDE; 
@@ -76,27 +78,48 @@ int main(int argc, char* argv[]) {
     mvprintw(0, 0, "PERIOD %.2f", period);
     mvprintw(1, 0, "AMP: %.2f", amplitude);
     mvprintw(2, 0, "PHASE: %d", phase_shift);
+    mvprintw(3, 0, "DELAY: x%hu", delayx);
 
     refresh();
 
     switch (getch()) {
-      case KEY_UP: amplitude += 1.0; break;
-      case KEY_DOWN: amplitude -= 1.0; break;
-      case KEY_LEFT: period -= .05; break;
-      case KEY_RIGHT: period += .05; break;
-      case (int)'q':
+      case KEY_UP: 
+      case 'k':
+        amplitude += 1.0;
+        break;
+      case KEY_DOWN:
+      case 'j':
+        amplitude -= 1.0;
+        break;
+      case KEY_LEFT:
+      case 'h':
+        period -= .05;
+        break;
+      case KEY_RIGHT:
+      case 'l':
+        period += .05;
+        break;
+      case ' ':
+        phase_shift = 0.0;
+        break;
+      case '+':
+        delayx += 1;
+        break;
+      case '-':
+        delayx -= 1;
+        break;
+      case 'q':
         endwin();
         return 0;
       default: break;
     }
 
-    usleep(DELAY);
+    usleep(BASE_DELAY*delayx);
 
     phase_shift += 1; 
 
     if (phase_shift*period >= LINES)
       phase_shift = 0;
-
   }
 
   endwin();
