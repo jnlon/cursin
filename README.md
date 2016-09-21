@@ -12,7 +12,6 @@ $ cd /path/to/cursin
 $ make
 
 $ ./cursin
-
 ```
 
 ## Controls
